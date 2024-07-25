@@ -1,16 +1,12 @@
 *{
   margin: 0px;
   padding: 0px;
+  font-family: "Audiowide", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
@@ -33,19 +29,21 @@ code {
   display: flex;
   justify-content: space-evenly;
   margin: 10px;
+  margin-top: 20px;
 }
 .input-chat input{
-  width: 80%;
+  width: 75%;
   height: 100%;
 }
 .input-chat button{
   height: 100%;
   width: 10%;
+  
 }
 
 .main-chat-box{
   margin: 10px;
-  height: 450px;
+  height: 465px;
   overflow-x: hidden;
   overflow-y: auto;
   background-color: rgb(215, 215, 215);
@@ -96,13 +94,37 @@ code {
   background-size: cover;
   border-radius: 5px;
 }
+.sideFranklin:hover{
+  border: 4px solid rgb(165, 165, 165);
+  border-radius: 8px;
+  opacity: 0.7;
+}
 .sideMichael{
   background-image: url("images/michael.png");
   background-size: cover;
   border-radius: 5px;
 }
+.sideMichael:hover{
+  border: 4px solid rgb(165, 165, 165);
+  border-radius: 8px;
+  opacity: 0.7;
+}
 .sideTrevor{
   background-image: url("images/trevor.png");
   background-size: cover;
   border-radius: 5px;
+}
+.sideTrevor:hover{
+  border: 4px solid rgb(165, 165, 165);
+  border-radius: 8px;
+  opacity: 0.7;
+}
+
+.sidebarHeading{
+  text-align: center;
+  font-weight: 700;
+}
+.michaelHeading, .franklinHeading, .trevorHeading{
+  margin-left: 10px;
+  font-weight: 900;
 }

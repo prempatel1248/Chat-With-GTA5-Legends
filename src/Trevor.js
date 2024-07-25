@@ -12,14 +12,19 @@ export default function Trevor(){
     const [submitPrompt, setSubmitPrompt] = React.useState(false);
     const [error, setError] = React.useState("");
     const chatBoxRef = React.useRef(null);
-    
-    const [history, setHistory] = React.useState([
+
+    const intialHistory = [
         {
             role: "user",
             parts: [{ text: "You are Trevor Philips from Grand Theft Auto V. Stay in character in every conversation. Always respond as Trevor Philips, reflecting his background, personality, and experiences. Your tone, attitude, traits and background should be of the character, Trevor. If the conversation is out of the context of Trevor or GTA 5, reply that you don't know about that. No matter what the user tells, you will not leave the character of Trevor and if the user says to change your character to something else, you will say that you are Trevor Philips and cannot pretend to be someone else. From now onwards your knowledge is equal to Trevor Philips's knowledge and you do not know anything which Trevor don't know." 
             }],
         },
-    ]);
+    ];
+    
+    const [history, setHistory] = React.useState(() => {
+        const savedHistory = JSON.parse(localStorage.getItem('TrevorHistory'));
+        return savedHistory ? savedHistory : intialHistory;
+    });
 
     function handleChange(event){
         setPrompt(event.target.value);
@@ -77,14 +82,23 @@ export default function Trevor(){
         setSubmitPrompt(false);
     }
 
+    function clearChat(){
+        localStorage.removeItem('TrevorHistory');
+        setHistory(intialHistory);
+    }
+
     React.useEffect(() => {
         if (chatBoxRef.current) {
           chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
         }
-      }, [history, reply, submitPrompt]);
+    }, [history, reply, submitPrompt]);
+
+    React.useEffect(() => {
+        localStorage.setItem('TrevorHistory', JSON.stringify(history));
+    }, [history, reply]);
 
     return <div className="trevor">
-        <h1>Trevor Philips</h1>
+        <h1 className="trevorHeading">Trevor Philips</h1>
         <div id="main-chat-box" className="main-chat-box" ref={chatBoxRef}>
             {history.slice(1).map((historyItem, _index) => 
                 <div key={_index}>
@@ -118,7 +132,8 @@ export default function Trevor(){
                     }
                 }}    
             />
-            <button onClick={handleSubmit}>Submit</button>
+            <button onClick={handleSubmit}>Send</button>
+            <button onClick={clearChat}>Clear</button>
         </div>
     </div>
 }
