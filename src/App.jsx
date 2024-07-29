@@ -1,12 +1,17 @@
-import Main from './Main'
-import './index.css'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Login from './login';
+import Signup from './signup';
+import Main from './Main';
+import './index.css';
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <Main />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Login />} />
+        <Route path='/signup' element={<Signup />} />
+        <Route path='/home' element={<Main />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
-
-export default App;

@@ -2,14 +2,19 @@ import React from "react"
 import Michael from "./Michael"
 import Franklin from "./Franklin"
 import Trevor from "./Trevor"
+import { useNavigate } from 'react-router-dom';
 
 
 export default function Main(){
-
+    const navigate = useNavigate();
     const [character, setCharacter] = React.useState("");
 
     function changeCharacter(characterName){
         setCharacter(characterName);    
+    }
+
+    function logout(){
+        navigate('/');
     }
 
 
@@ -21,6 +26,7 @@ export default function Main(){
                 <button className="sideFranklin" onClick={() => changeCharacter("franklin")}></button>
                 <button className="sideTrevor" onClick={() => changeCharacter("trevor")}></button>
             </div>
+            <button onClick={logout}>Logout</button>
         </div>
         {character === "michael" && <Michael />}
         {character === "franklin" && <Franklin />}

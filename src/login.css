@@ -1,0 +1,70 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+
+.loginBody{
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background-image: url('./images/gta-5-cover.jpg');
+    background-size: cover;
+}
+
+.signupBody{
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background-image: url('./images/gta-5-cover.jpg');
+    background-size: cover;
+}
+
+.login{
+    color: white;
+    padding: 40px;
+    width: 20%;
+    background-color: rgba(0, 0, 0, 0.6);
+    text-align: center;
+}
+
+.login h1{
+    margin-bottom: 20px;
+    font-size: 45px;
+}
+
+.loginForm input{
+    width: 100%;
+    padding: 12px 10px;
+    margin: 8px 0;
+    display: inline-block;
+    box-sizing: border-box;
+    color: red;
+    font-size: 15px;
+}
+
+.loginbtn{
+    border: none;
+    width: 100%;
+    padding: 12px 10px;
+    margin: 8px 0;
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+.loginbtn:hover{
+    background-color: red;
+}
+
+.link{
+    color: white;
+}
+.link:hover{
+    color: red;
+}
+
+.error{
+    color: red;
+    margin-top: 20px;
+    margin-bottom: -10px;
+}
