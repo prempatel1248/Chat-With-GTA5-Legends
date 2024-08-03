@@ -18,7 +18,7 @@ export default function Signup() {
         .then(response => {
             console.log(response.data);
             // Navigate to the home page on successful signup
-            navigate('/home');
+            navigate('/welcome', { state: { email } });
         })
         .catch(error => {
             const errorMsg = error.response.data.message || "Login failed";

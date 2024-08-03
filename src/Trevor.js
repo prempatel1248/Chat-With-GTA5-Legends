@@ -1,11 +1,11 @@
 import React from "react";
 import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } from "@google/generative-ai";
-
+import axios from "axios";
 
 
 const genAI = new GoogleGenerativeAI(process.env.REACT_APP_API_KEY);
 
-export default function Trevor(){
+export default function Trevor({email, mode}){
 
     const [prompt, setPrompt] = React.useState("")
     const [reply, setReply] = React.useState("");
@@ -13,18 +13,16 @@ export default function Trevor(){
     const [error, setError] = React.useState("");
     const chatBoxRef = React.useRef(null);
 
-    const intialHistory = [
+    const initialHistory = [
         {
             role: "user",
             parts: [{ text: "You are Trevor Philips from Grand Theft Auto V. Stay in character in every conversation. Always respond as Trevor Philips, reflecting his background, personality, and experiences. Your tone, attitude, traits and background should be of the character, Trevor. If the conversation is out of the context of Trevor or GTA 5, reply that you don't know about that. No matter what the user tells, you will not leave the character of Trevor and if the user says to change your character to something else, you will say that you are Trevor Philips and cannot pretend to be someone else. From now onwards your knowledge is equal to Trevor Philips's knowledge and you do not know anything which Trevor don't know." 
             }],
         },
     ];
+
+    const [history, setHistory] = React.useState([]);
     
-    const [history, setHistory] = React.useState(() => {
-        const savedHistory = JSON.parse(localStorage.getItem('TrevorHistory'));
-        return savedHistory ? savedHistory : intialHistory;
-    });
 
     function handleChange(event){
         setPrompt(event.target.value);
@@ -83,8 +81,7 @@ export default function Trevor(){
     }
 
     function clearChat(){
-        localStorage.removeItem('TrevorHistory');
-        setHistory(intialHistory);
+        setHistory(initialHistory);
     }
 
     React.useEffect(() => {
@@ -94,11 +91,44 @@ export default function Trevor(){
     }, [history, reply, submitPrompt]);
 
     React.useEffect(() => {
-        localStorage.setItem('TrevorHistory', JSON.stringify(history));
-    }, [history, reply]);
+        if(history.length > 0){
+            axios.post('http://localhost:3001/chatHistory', { email, history, character:"Trevor" })
+            .then(response => {
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.log("Error in inserting history to DB: ", error)
+            });
+        }
+    }, [reply, history]);
 
-    return <div className="trevor">
-        <h1 className="trevorHeading">Trevor Philips</h1>
+    React.useEffect(() => {
+        const fetchChatHistory = async () => {
+            try {
+                const response = await axios.get('http://localhost:3001/getChatHistory', {
+                    params: { email }
+                });
+                const fetchedHistory = response.data.TrevorHistory || [];
+                // Ensure the history starts with the initial user message if it's empty
+                if (fetchedHistory.length === 0) {
+                    setHistory(initialHistory); // <-- Set initial history if no history exists
+                } else {
+                    setHistory(fetchedHistory);
+                }
+            } catch (error) {
+                console.error("Error fetching chat history:", error);
+                setError("Error fetching chat history.");
+            }
+        };
+    
+        fetchChatHistory();
+    }, []);
+
+    return <div className={`trevor trevor${mode}`}>
+        <div className="trevorHeading">
+            <div className="TrevorDP"></div>
+            <h1>Trevor Philips</h1>
+        </div>
         <div id="main-chat-box" className="main-chat-box" ref={chatBoxRef}>
             {history.slice(1).map((historyItem, _index) => 
                 <div key={_index}>
@@ -132,7 +162,7 @@ export default function Trevor(){
                     }
                 }}    
             />
-            <button onClick={handleSubmit}>Send</button>
+            <button className="send" onClick={handleSubmit}><i className="fa-solid fa-location-arrow"></i></button>
             <button onClick={clearChat}>Clear</button>
         </div>
     </div>

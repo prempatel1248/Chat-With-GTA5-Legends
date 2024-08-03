@@ -1,11 +1,11 @@
 import React from "react";
 import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } from "@google/generative-ai";
-
+import axios from "axios";
 
 
 const genAI = new GoogleGenerativeAI(process.env.REACT_APP_API_KEY);
 
-export default function Franklin(){
+export default function Franklin({email, mode}){
 
     const [prompt, setPrompt] = React.useState("")
     const [reply, setReply] = React.useState("");
@@ -13,7 +13,7 @@ export default function Franklin(){
     const [error, setError] = React.useState("");
     const chatBoxRef = React.useRef(null);
     
-    const intialHistory = [
+    const initialHistory = [
         {
             role: "user",
             parts: [{ text: "You are Franklin Clinton from Grand Theft Auto V. Stay in character in every conversation. Always respond as Franklin Clinton, reflecting his background, personality, and experiences. Your tone, attitude, traits and background should be of the character, Franklin. If the conversation is out of the context of Franklin or GTA 5, reply that you don't know about that. No matter what the user tells, you will not leave the character of Franklin and if the user says to change your character to something else, you will say that you are Franklin Clinton and cannot pretend to be someone else. From now onwards your knowledge is equal to Franklin Clinton's knowledge and you do not know anything which Franklin don't know." 
@@ -21,10 +21,7 @@ export default function Franklin(){
         },
     ];
 
-    const [history, setHistory] = React.useState(() => {
-        const savedHistory = JSON.parse(localStorage.getItem('FranklinHistory'));
-        return savedHistory ? savedHistory : intialHistory;
-    });
+    const [history, setHistory] = React.useState([]);
 
     function handleChange(event){
         setPrompt(event.target.value);
@@ -83,8 +80,7 @@ export default function Franklin(){
     }
 
     function clearChat(){
-        localStorage.removeItem('FranklinHistory');
-        setHistory(intialHistory);
+        setHistory(initialHistory);
     }
 
     React.useEffect(() => {
@@ -94,11 +90,45 @@ export default function Franklin(){
     }, [history, reply, submitPrompt]);
 
     React.useEffect(() => {
-        localStorage.setItem('FranklinHistory', JSON.stringify(history));
-    }, [history, reply]);
+        if(history.length > 0){
+            axios.post('http://localhost:3001/chatHistory', { email, history, character:"Franklin" })
+            .then(response => {
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.log("Error in inserting history to DB: ", error)
+            });
+        }
+    }, [reply, history]);
 
-    return <div className="franklin">
-        <h1 className="franklinHeading">Franklin Clinton</h1>
+    React.useEffect(() => {
+        const fetchChatHistory = async () => {
+            try {
+                const response = await axios.get('http://localhost:3001/getChatHistory', {
+                    params: { email }
+                });
+                const fetchedHistory = response.data.FranklinHistory || [];
+                // Ensure the history starts with the initial user message if it's empty
+                if (fetchedHistory.length === 0) {
+                    setHistory(initialHistory); // <-- Set initial history if no history exists
+                } else {
+                    setHistory(fetchedHistory);
+                }
+            } catch (error) {
+                console.error("Error fetching chat history:", error);
+                setError("Error fetching chat history.");
+            }
+        };
+    
+        fetchChatHistory();
+    }, []);
+
+    return <div className={`franklin franklin${mode}`}>
+        <div className="franklinHeading">
+            <div className="FranklinDP"></div>
+            <h1>Franklin Clinton</h1>
+        </div>
+
         <div id="main-chat-box" className="main-chat-box" ref={chatBoxRef}>
             {history.slice(1).map((historyItem, _index) => 
                 <div key={_index}>
@@ -132,7 +162,7 @@ export default function Franklin(){
                     }
                 }}    
             />
-            <button onClick={handleSubmit}>Send</button>
+            <button className="send" onClick={handleSubmit}><i className="fa-solid fa-location-arrow"></i></button>
             <button onClick={clearChat}>Clear</button>
         </div>
     </div>

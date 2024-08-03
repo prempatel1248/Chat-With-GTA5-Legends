@@ -23,7 +23,7 @@ export default function Signup() {
         .then(response => {
             console.log(response.data);
             // Navigate to the home page on successful signup
-            navigate('/home');
+            navigate('/welcome', { state: { email } });
         })
         .catch(error => {
             setErr("Signup failed");
@@ -34,6 +34,13 @@ export default function Signup() {
 
     const handleSendOtp = (e) => {
         e.preventDefault();
+        const emailPattern =  /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; 
+        const isValid = emailPattern.test(email); 
+        
+        if(!isValid){
+            setErr("Invalid Email");
+            return;
+        }
         
         const tempOtp = (Math.floor(100000 + Math.random() * 900000)).toString();
         setOtp(tempOtp);

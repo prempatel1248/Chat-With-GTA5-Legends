@@ -1,11 +1,11 @@
 import React from "react"
 import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } from "@google/generative-ai";
-
+import axios from "axios";
 
 
 const genAI = new GoogleGenerativeAI(process.env.REACT_APP_API_KEY);
 
-export default function Michael(){
+export default function Michael({email, mode}){
 
     const [prompt, setPrompt] = React.useState("")
     const [reply, setReply] = React.useState("");
@@ -13,18 +13,15 @@ export default function Michael(){
     const [error, setError] = React.useState("");
     const chatBoxRef = React.useRef(null);
 
-    const intialHistory = [
+    const initialHistory = [
         {
             role: "user",
             parts: [{ text: "You are Michael De Santa from Grand Theft Auto V. Stay in character in every conversation. Always respond as Michael De Santa, reflecting his background, personality, and experiences. Your tone, attitude, traits and background should be of the character, Michael. If the conversation is out of the context of Michael or GTA 5, reply that you don't know about that. No matter what the user tells, you will not leave the character of Michael and if the user says to change your character to something else, you will say that you are Michael De Santa and cannot pretend to be someone else. From now onwards your knowledge is equal to Michael De Santa's knowledge and you do not know anything which Michael don't know." 
             }],
         },
     ];
-    
-    const [history, setHistory] = React.useState(() => {
-        const savedHistory = localStorage.getItem('MichaelHistory');
-        return savedHistory ? JSON.parse(savedHistory) : intialHistory;
-    });
+
+    const [history, setHistory] = React.useState([]);
 
 
     function handleChange(event){
@@ -61,7 +58,7 @@ export default function Michael(){
             const chat = model.startChat({
                 history,
                 generationConfig: {
-                maxOutputTokens: 200,
+                maxOutputTokens: 150,
                 },
             });
     
@@ -85,8 +82,7 @@ export default function Michael(){
     }
 
     function clearChat(){
-        localStorage.removeItem('MichaelHistory');
-        setHistory(intialHistory);
+        setHistory(initialHistory);
     }
 
     React.useEffect(() => {
@@ -96,11 +92,47 @@ export default function Michael(){
     }, [history, reply, submitPrompt]);
 
     React.useEffect(() => {
-        localStorage.setItem('MichaelHistory', JSON.stringify(history));
-    }, [history, reply]);
+        if(history.length > 0){
+            axios.post('http://localhost:3001/chatHistory', { email, history, character:"Michael" })
+            .then(response => {
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.log("Error in inserting history to DB: ", error)
+            });
+        }
+    }, [reply, history]);
 
-    return <div className="michael">
-        <h1 className="michaelHeading">Michael De Santa</h1>
+    React.useEffect(() => {
+        const fetchChatHistory = async () => {
+            try {
+                const response = await axios.get('http://localhost:3001/getChatHistory', {
+                    params: { email }
+                });
+                const fetchedHistory = response.data.MichaelHistory || [];
+                // Ensure the history starts with the initial user message if it's empty
+                if (fetchedHistory.length === 0) {
+                    setHistory(initialHistory); // <-- Set initial history if no history exists
+                } else {
+                    setHistory(fetchedHistory);
+                }
+            } catch (error) {
+                console.error("Error fetching chat history:", error);
+                setError("Error fetching chat history.");
+            }
+        };
+    
+        fetchChatHistory();
+    }, []);
+
+    
+
+
+    return <div className={`michael michael${mode}`}>
+        <div className="michaelHeading">
+            <div className="MichaelDP"></div>
+            <h1>Michael De Santa</h1>
+        </div>
         <div id="main-chat-box" className="main-chat-box" ref={chatBoxRef}>
             {history.slice(1).map((historyItem, _index) => 
                 <div key={_index}>
@@ -134,7 +166,7 @@ export default function Michael(){
                     }
                 }}    
             />
-            <button onClick={handleSubmit}>Send</button>
+            <button className="send" onClick={handleSubmit}><i className="fa-solid fa-location-arrow"></i></button>
             <button onClick={clearChat}>Clear</button>
         </div>
     </div>
