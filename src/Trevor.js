@@ -109,9 +109,9 @@ export default function Trevor({email, mode}){
                     params: { email }
                 });
                 const fetchedHistory = response.data.TrevorHistory || [];
-                // Ensure the history starts with the initial user message if it's empty
+                
                 if (fetchedHistory.length === 0) {
-                    setHistory(initialHistory); // <-- Set initial history if no history exists
+                    setHistory(initialHistory);
                 } else {
                     setHistory(fetchedHistory);
                 }

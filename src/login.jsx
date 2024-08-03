@@ -17,14 +17,12 @@ export default function Signup() {
         axios.post('http://localhost:3001/login', { email, password })
         .then(response => {
             console.log(response.data);
-            // Navigate to the home page on successful signup
             navigate('/welcome', { state: { email } });
         })
         .catch(error => {
             const errorMsg = error.response.data.message || "Login failed";
             setErr(errorMsg);
             console.error('Login failed:', error);
-            // Handle signup error
         });
     }
 

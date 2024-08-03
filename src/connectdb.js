@@ -1,11 +1,8 @@
-require('dotenv').config();
-
 const express = require("express");
 const mongoose = require('mongoose');
 const cors = require("cors");
 const User = require('./userModel');
 const nodemailer = require("nodemailer");
-
 
 const app = express();
 app.use(express.json());
@@ -42,7 +39,6 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 async function insert(userEmail, userPassword) {
     try {
-        // const hashedPassword = await bcrypt.hash(userPassword, 10);
         await User.create({
             email: userEmail,
             password: userPassword,
@@ -69,7 +65,7 @@ app.post('/signup', async (req, res) => {
         }
 
         await insert(data.email, data.password);
-        res.status(201).send("Signup successful"); // Send a success response
+        res.status(201).send("Signup successful");
     } catch (error) {
         console.error("Error during signup:", error);
         res.status(500).send("An error occurred during signup.");
@@ -85,7 +81,6 @@ app.post('/otp', async (req, res) => {
     try{
         const existingUser = await User.findOne({ email: data.email });
         if (existingUser) {
-            console.log("existing user");
             return res.status(400).json({ message: "User already exists with this email." });
         }
         
@@ -109,9 +104,8 @@ app.post('/otp', async (req, res) => {
     
         auth.sendMail(receiver, (error, emailResponse) => {
             if (error) {
-                return console.log(error);
+                return error;
             }
-            console.log('Message sent: %s', info.messageId);
         });
         
     }
@@ -129,7 +123,6 @@ app.post('/login', async (req, res) => {
     };
 
     try {
-        // Check if user already exists
         const user = await User.findOne({ email: data.email });
         if (!user) {
             return res.status(400).json({ message: "Invalid email" });
@@ -138,7 +131,7 @@ app.post('/login', async (req, res) => {
         if(data.password !== user.password){
             return res.status(400).json({ message: "Invalid email or password" });
         }
-        res.status(201).send("Login successful"); // Send a success response
+        res.status(201).send("Login successful");
     } catch (error) {
         console.error("Error during signup:", error);
         res.status(500).send("An error occurred during signup.");
@@ -149,13 +142,11 @@ app.post('/chatHistory', async (req, res) => {
     const { email, character, history } = req.body;
 
     try {
-        // Find the user by email
         const user = await User.findOne({ email });
         if (!user) {
             return res.status(404).send("User not found");
         }
 
-        // Determine which field to update based on the character
         let updateField = {};
         if (character === "Michael") {
             updateField = { MichaelHistory: history };
@@ -167,7 +158,6 @@ app.post('/chatHistory', async (req, res) => {
             return res.status(400).send("Invalid character");
         }
 
-        // Update the user's chat history for the specified character
         await User.updateOne({ email }, { $set: updateField });
 
         res.status(200).send("Chat history updated successfully");
@@ -195,8 +185,6 @@ app.get('/getChatHistory', async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 });
-
-
 
 
 

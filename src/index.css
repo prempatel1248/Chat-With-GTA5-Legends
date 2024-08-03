@@ -264,25 +264,21 @@ code {
   opacity: 1;
 }
 
-/* Responsive Design */
+
 @media (max-width: 1024px) {
   .sidebar {
     width: 30%;
     height: 100vh;
   }
-
   .main-chat-box{
     height: 80vh;
   }
-
   .input-chat input {
     width: 70%;
   }
-  
   .input-chat button {
     width: 14%;
   }
-
   .closeSidebar{
     position: absolute;
     top: 40px;
@@ -295,19 +291,15 @@ code {
     width: 45%;
     height: 100vh;
   }
-
   .input-chat input {
     width: 65%;
   }
-
   .input-chat button {
     width: 16%;
   }
-
   .prompt-box, .reply-box {
     max-width: 80%;
   }
-
   .closeSidebar, .openSidebar {
     left: 0px;
     font-size: 30px;
@@ -325,33 +317,26 @@ code {
     height: 100vh;
     position: static;
   }
-
   .main {
     flex-direction: column;
   }
-  
   .michael, .franklin, .trevor{
     padding-left: 0px;
   }
-
   .sidebarHeading, .legends, .logoutBtn {
     font-size: 20px;
   }
-
   .input-chat {
     flex-direction: column;
     align-items: center;
   }
-
   .input-chat input, .input-chat button {
     width: 90%;
     margin: 5px 0;
   }
-
   .prompt-box, .reply-box {
     max-width: 90%;
   }
-
   .closeSidebar, .openSidebar {
     position: relative;
     font-size: 40px;

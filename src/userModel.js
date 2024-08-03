@@ -1,4 +1,3 @@
-// userModel.js
 const { type } = require('@testing-library/user-event/dist/type');
 const mongoose = require('mongoose');
 

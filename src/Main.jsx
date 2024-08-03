@@ -43,7 +43,6 @@ export default function Main() {
     }
 
     return <div className={`main Selected${character}`}>
-        {console.log(darkMode)}
         {sidebar && <div className={`sidebar sidebar${darkMode}`}>
             <div className="sidebarHeading">
                 <h1>Legends</h1>
