@@ -10,7 +10,8 @@ export default function Signup() {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [err, setErr] = React.useState('');
-
+    axios.defaults.withCredentials = true;
+    
     const handleSubmit = (e) => {
         e.preventDefault();
         
