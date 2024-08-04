@@ -6,7 +6,14 @@ const User = require('./userModel');
 const nodemailer = require("nodemailer");
 
 const app = express();
-app.use(cors());
+app.use(cors(
+    {
+        origin: 'https://chat-with-gta-5-legends.vercel.app', 
+        methods: ['GET', 'POST', 'PUT', 'DELETE'],
+        allowedHeaders: ['Content-Type', 'Authorization'],
+        credentials: true,
+    }
+));
 app.use(express.json());
 
 app.get("/", (req, res) => {
