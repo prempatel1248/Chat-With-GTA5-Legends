@@ -6,11 +6,13 @@ const User = require('./userModel');
 const nodemailer = require("nodemailer");
 
 const app = express();
-app.use(cors({
-    origin: ["https://chat-with-gta-5-legends.vercel.app"],
-    methods: ["POST", "GET"],
-    credentials: true
-}));
+app.use(cors(
+    {
+        origin: ["https://chat-with-gta-5-legends.vercel.app"],
+        methods: ["POST", "GET"],
+        credentials: true
+    }
+));
 app.use(express.json());
 
 const initialMichaelHistory = [
@@ -38,8 +40,9 @@ const initialTrevorHistory = [
 const mongoURI = process.env.REACT_APP_MONGODB;
 
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log('MongoDB connected'))
-    .catch(err => console.log('MongoDB connection error:', err));
+.then(() => console.log('MongoDB connected'))
+.catch(err => console.log('MongoDB connection error:', err));
+
 
 async function insert(userEmail, userPassword) {
     try {
@@ -50,21 +53,25 @@ async function insert(userEmail, userPassword) {
             FranklinHistory: initialFranklinHistory,
             TrevorHistory: initialTrevorHistory
         });
+        
     } catch (err) {
         console.error('Error inserting user:', err);
     }
 }
 
 app.post('/signup', async (req, res) => {
-    const { email, password } = req.body;
+    const data = {
+        email: req.body.email,
+        password: req.body.password
+    };
 
     try {
-        const existingUser = await User.findOne({ email });
+        const existingUser = await User.findOne({ email: data.email });
         if (existingUser) {
             return res.status(400).json({ message: "User already exists with this email." });
         }
 
-        await insert(email, password);
+        await insert(data.email, data.password);
         res.status(201).send("Signup successful");
     } catch (error) {
         console.error("Error during signup:", error);
@@ -73,63 +80,70 @@ app.post('/signup', async (req, res) => {
 });
 
 app.post('/otp', async (req, res) => {
-    const { email, otp } = req.body;
+    const data = {
+        email: req.body.email,
+        otp: req.body.otp
+    };
 
-    try {
-        const existingUser = await User.findOne({ email });
+    try{
+        const existingUser = await User.findOne({ email: data.email });
         if (existingUser) {
             return res.status(400).json({ message: "User already exists with this email." });
         }
-
-        const transporter = nodemailer.createTransport({
+        
+        const auth = nodemailer.createTransport({
             service: "gmail",
-            secure: true,
-            port: 465,
+            secure : true,
+            port : 465,
             auth: {
                 user: "prempatel01248@gmail.com",
-                pass: process.env.REACT_APP_GMAIL_PASS
+                pass: process.env.REACT_APP_GMIAL_PASS
+    
             }
         });
-
-        const mailOptions = {
-            from: "prempatel01248@gmail.com",
-            to: email,
-            subject: "Chat With GTA-5 Legends OTP",
-            text: `Your signup OTP is ${otp}`
+    
+        let receiver = {
+            from : "prempatel01248@gmail.com",
+            to : data.email,
+            subject : "Chat With GTA-5 Legends OTP",
+            text : `Your signup OTP is ${data.otp}`
         };
-
-        transporter.sendMail(mailOptions, (error, info) => {
+    
+        auth.sendMail(receiver, (error, emailResponse) => {
             if (error) {
-                console.error("Error sending mail:", error);
-                return res.status(500).send("Error sending OTP email."); // Added response for mail send error
+                return error;
             }
-            res.status(200).send("OTP sent successfully."); // Added success response
         });
-
-    } catch (error) {
-        console.log("Error during sending otp:", error);
-        res.status(500).send("An error occurred during sending OTP."); // Added response for try-catch error
+        
     }
-});
+    catch(error){
+        console.log("Error during sending otp: ", error);
+        res.status(500).send("An error occurred during sending otp.");
+    }
+})
 
 app.post('/login', async (req, res) => {
-    const { email, password } = req.body;
+
+    const data = {
+        email: req.body.email,
+        password: req.body.password
+    };
 
     try {
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email: data.email });
         if (!user) {
             return res.status(400).json({ message: "Invalid email" });
         }
 
-        if (password !== user.password) {
+        if(data.password !== user.password){
             return res.status(400).json({ message: "Invalid email or password" });
         }
         res.status(201).send("Login successful");
     } catch (error) {
-        console.error("Error during login:", error);
-        res.status(500).send("An error occurred during login.");
+        console.error("Error during signup:", error);
+        res.status(500).send("An error occurred during signup.");
     }
-});
+})
 
 app.post('/chatHistory', async (req, res) => {
     const { email, character, history } = req.body;
@@ -179,7 +193,8 @@ app.get('/getChatHistory', async (req, res) => {
     }
 });
 
-const PORT = process.env.PORT || 3001; // Added port configuration
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`); // Ensured server listens on the configured port
-});
+
+
+// app.listen(3001, () => {
+//     console.log('Server is running on port 3001');
+// });
