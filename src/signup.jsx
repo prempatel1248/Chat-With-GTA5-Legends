@@ -1,185 +1,98 @@
-require('dotenv').config();
-const express = require("express");
-const mongoose = require('mongoose');
-const cors = require("cors");
-const User = require('./userModel');
-const nodemailer = require("nodemailer");
+import React from "react";
+import axios from "axios";
+import { useNavigate } from 'react-router-dom';
+import './login.css'
 
-const app = express();
-app.use(cors({
-    origin: ["https://chat-with-gta-5-legends.vercel.app"],
-    methods: ["POST", "GET"],
-    credentials: true
-}));
-app.use(express.json());
+export default function Signup() {
+    const navigate = useNavigate();
 
-const initialMichaelHistory = [
-    {
-        role: "user",
-        parts: [{ text: "You are Michael De Santa from Grand Theft Auto V. Stay in character in every conversation. Always respond as Michael De Santa, reflecting his background, personality, and experiences. Your tone, attitude, traits and background should be of the character, Michael. If the conversation is out of the context of Michael or GTA 5, reply that you don't know about that. No matter what the user tells, you will not leave the character of Michael and if the user says to change your character to something else, you will say that you are Michael De Santa and cannot pretend to be someone else. From now onwards your knowledge is equal to Michael De Santa's knowledge and you do not know anything which Michael don't know." 
-        }],
-    },
-];
-const initialFranklinHistory = [
-    {
-        role: "user",
-        parts: [{ text: "You are Franklin Clinton from Grand Theft Auto V. Stay in character in every conversation. Always respond as Franklin Clinton, reflecting his background, personality, and experiences. Your tone, attitude, traits and background should be of the character, Franklin. If the conversation is out of the context of Franklin or GTA 5, reply that you don't know about that. No matter what the user tells, you will not leave the character of Franklin and if the user says to change your character to something else, you will say that you are Franklin Clinton and cannot pretend to be someone else. From now onwards your knowledge is equal to Franklin Clinton's knowledge and you do not know anything which Franklin don't know." 
-        }],
-    },
-];
-const initialTrevorHistory = [
-    {
-        role: "user",
-        parts: [{ text: "You are Trevor Philips from Grand Theft Auto V. Stay in character in every conversation. Always respond as Trevor Philips, reflecting his background, personality, and experiences. Your tone, attitude, traits and background should be of the character, Trevor. If the conversation is out of the context of Trevor or GTA 5, reply that you don't know about that. No matter what the user tells, you will not leave the character of Trevor and if the user says to change your character to something else, you will say that you are Trevor Philips and cannot pretend to be someone else. From now onwards your knowledge is equal to Trevor Philips's knowledge and you do not know anything which Trevor don't know." 
-        }],
-    },
-];
+    const [email, setEmail] = React.useState('');
+    const [password, setPassword] = React.useState('');
+    const [sentotp, setSentotp] = React.useState(false);
+    const [stateOtp, setStateOtp] = React.useState('');
+    const [err, setErr] = React.useState('');
+    const [otp, setOtp] = React.useState('');
 
-const mongoURI = process.env.REACT_APP_MONGODB;
-
-mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log('MongoDB connected'))
-    .catch(err => console.log('MongoDB connection error:', err));
-
-async function insert(userEmail, userPassword) {
-    try {
-        await User.create({
-            email: userEmail,
-            password: userPassword,
-            MichaelHistory: initialMichaelHistory,
-            FranklinHistory: initialFranklinHistory,
-            TrevorHistory: initialTrevorHistory
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if(otp != stateOtp){
+            setErr("Incorrect OTP");
+            return;
+        }
+        axios.post('https://chat-with-gta-5-legends.vercel.app/signup', { email, password })
+        .then(response => {
+            console.log(response.data);
+            navigate('/welcome', { state: { email } });
+        })
+        .catch(error => {
+            setErr("Signup failed");
+            console.error('Signup failed:', error);
         });
-    } catch (err) {
-        console.error('Error inserting user:', err);
     }
+
+    const handleSendOtp = (e) => {
+        e.preventDefault();
+        const emailPattern =  /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; 
+        const isValid = emailPattern.test(email); 
+        
+        if(!isValid){
+            setErr("Invalid Email");
+            return;
+        }
+        
+        const tempOtp = (Math.floor(100000 + Math.random() * 900000)).toString();
+        setOtp(tempOtp);
+        setSentotp(true);
+        axios.post('chat-with-gta-5-legends.vercel.app/otp', {email, otp: tempOtp})
+        .then(response => {
+            console.log(response.data);
+        })
+        .catch(error => {
+            setSentotp(false);
+            const errorMsg = error.response.data.message || "Signup failed";
+            setErr(errorMsg);
+            console.log("Send otp failed: ", error);
+        })
+
+    }
+
+    return (
+        <div className="signupBody">
+            {!sentotp && <div className="login">
+                <h1>Sign up</h1>
+                <form className="loginForm" onSubmit={handleSendOtp}>
+                    <input 
+                        type="text" 
+                        placeholder="Email" 
+                        name="email" 
+                        value={email} 
+                        onChange={(e) => setEmail(e.target.value)} 
+                    />
+                    <input 
+                        type="password" 
+                        placeholder="Password" 
+                        name="password" 
+                        value={password} 
+                        onChange={(e) => setPassword(e.target.value)} 
+                    />
+                    <button className="loginbtn" type="submit">Send OTP</button>
+                </form>
+                {err && <div className="error">{err}</div>}
+            </div>}
+            {sentotp && <div className="login">
+                <form className="loginForm" onSubmit={handleSubmit}>
+                    <input 
+                        type="text" 
+                        placeholder="Enter OTP" 
+                        name="otp" 
+                        value={stateOtp} 
+                        onChange={(e) => setStateOtp(e.target.value)} 
+                    />
+                    <button className="loginbtn" type="submit">Sign up</button>
+                </form>
+                {err && <div className="error">{err}</div>}
+            </div>}
+            
+        </div>
+    );
 }
-
-app.post('/signup', async (req, res) => {
-    const { email, password } = req.body;
-
-    try {
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
-            return res.status(400).json({ message: "User already exists with this email." });
-        }
-
-        await insert(email, password);
-        res.status(201).send("Signup successful");
-    } catch (error) {
-        console.error("Error during signup:", error);
-        res.status(500).send("An error occurred during signup.");
-    }
-});
-
-app.post('/otp', async (req, res) => {
-    const { email, otp } = req.body;
-
-    try {
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
-            return res.status(400).json({ message: "User already exists with this email." });
-        }
-
-        const transporter = nodemailer.createTransport({
-            service: "gmail",
-            secure: true,
-            port: 465,
-            auth: {
-                user: "prempatel01248@gmail.com",
-                pass: process.env.REACT_APP_GMAIL_PASS
-            }
-        });
-
-        const mailOptions = {
-            from: "prempatel01248@gmail.com",
-            to: email,
-            subject: "Chat With GTA-5 Legends OTP",
-            text: `Your signup OTP is ${otp}`
-        };
-
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                console.error("Error sending mail:", error);
-                return res.status(500).send("Error sending OTP email."); // Added response for mail send error
-            }
-            res.status(200).send("OTP sent successfully."); // Added success response
-        });
-
-    } catch (error) {
-        console.log("Error during sending otp:", error);
-        res.status(500).send("An error occurred during sending OTP."); // Added response for try-catch error
-    }
-});
-
-app.post('/login', async (req, res) => {
-    const { email, password } = req.body;
-
-    try {
-        const user = await User.findOne({ email });
-        if (!user) {
-            return res.status(400).json({ message: "Invalid email" });
-        }
-
-        if (password !== user.password) {
-            return res.status(400).json({ message: "Invalid email or password" });
-        }
-        res.status(201).send("Login successful");
-    } catch (error) {
-        console.error("Error during login:", error);
-        res.status(500).send("An error occurred during login.");
-    }
-});
-
-app.post('/chatHistory', async (req, res) => {
-    const { email, character, history } = req.body;
-
-    try {
-        const user = await User.findOne({ email });
-        if (!user) {
-            return res.status(404).send("User not found");
-        }
-
-        let updateField = {};
-        if (character === "Michael") {
-            updateField = { MichaelHistory: history };
-        } else if (character === "Franklin") {
-            updateField = { FranklinHistory: history };
-        } else if (character === "Trevor") {
-            updateField = { TrevorHistory: history };
-        } else {
-            return res.status(400).send("Invalid character");
-        }
-
-        await User.updateOne({ email }, { $set: updateField });
-
-        res.status(200).send("Chat history updated successfully");
-    } catch (error) {
-        console.error("Error during inserting chatHistory in database:", error);
-        res.status(500).send("An error occurred during inserting chatHistory in database.");
-    }
-});
-
-app.get('/getChatHistory', async (req, res) => {
-    const { email } = req.query;
-
-    try {
-        const user = await User.findOne({ email });
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
-        res.json({
-            MichaelHistory: user.MichaelHistory || [],
-            FranklinHistory: user.FranklinHistory || [],
-            TrevorHistory: user.TrevorHistory || []
-        });
-    } catch (error) {
-        console.error("Error in getChatHistory:", error);
-        res.status(500).json({ message: "Internal server error" });
-    }
-});
-
-const PORT = process.env.PORT || 3001; // Added port configuration
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`); // Ensured server listens on the configured port
-});
