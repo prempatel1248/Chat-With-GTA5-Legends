@@ -19,7 +19,7 @@ export default function Signup() {
             setErr("Incorrect OTP");
             return;
         }
-        axios.post('http://localhost:3001/signup', { email, password })
+        axios.post('https://chat-with-gta-5-legends.vercel.app/signup', { email, password })
         .then(response => {
             console.log(response.data);
             navigate('/welcome', { state: { email } });
@@ -43,7 +43,7 @@ export default function Signup() {
         const tempOtp = (Math.floor(100000 + Math.random() * 900000)).toString();
         setOtp(tempOtp);
         setSentotp(true);
-        axios.post('http://localhost:3001/otp', {email, otp: tempOtp})
+        axios.post('chat-with-gta-5-legends.vercel.app/otp', {email, otp: tempOtp})
         .then(response => {
             console.log(response.data);
         })

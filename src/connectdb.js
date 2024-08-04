@@ -6,15 +6,8 @@ const User = require('./userModel');
 const nodemailer = require("nodemailer");
 
 const app = express();
-app.use(cors(
-    {
-        origin: ["https://chat-with-gta-5-legends.vercel.app/"],
-        methods: ["POST", "GET"],
-        credentials: true
-    }
-));
 app.use(express.json());
-
+app.use(cors());
 
 const initialMichaelHistory = [
     {
@@ -196,6 +189,6 @@ app.get('/getChatHistory', async (req, res) => {
 
 
 
-app.listen(3001, () => {
-    console.log('Server is running on port 3001');
-});
+// app.listen(3001, () => {
+//     console.log('Server is running on port 3001');
+// });

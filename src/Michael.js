@@ -93,7 +93,7 @@ export default function Michael({email, mode}){
 
     React.useEffect(() => {
         if(history.length > 0){
-            axios.post('http://localhost:3001/chatHistory', { email, history, character:"Michael" })
+            axios.post('chat-with-gta-5-legends.vercel.app/chatHistory', { email, history, character:"Michael" })
             .then(response => {
                 console.log(response.data);
             })
@@ -106,7 +106,7 @@ export default function Michael({email, mode}){
     React.useEffect(() => {
         const fetchChatHistory = async () => {
             try {
-                const response = await axios.get('http://localhost:3001/getChatHistory', {
+                const response = await axios.get('chat-with-gta-5-legends.vercel.app/getChatHistory', {
                     params: { email }
                 });
                 const fetchedHistory = response.data.MichaelHistory || [];
