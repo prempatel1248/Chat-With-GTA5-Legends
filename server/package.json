@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "@testing-library/user-event": "^14.5.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mailer": "^0.6.7",
+    "mongoose": "^8.5.2",
+    "node": "^20.16.0",
+    "nodemailer": "^6.9.14",
+    "testing-library": "^0.0.2"
+  }
+}
