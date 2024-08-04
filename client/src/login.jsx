@@ -14,7 +14,7 @@ export default function Signup() {
     const handleSubmit = (e) => {
         e.preventDefault();
         
-        axios.post('https://chat-with-gta-5-legends.vercel.app/login', { email, password })
+        axios.post('chat-with-gta-5-legends-server.vercel.app/login', { email, password })
         .then(response => {
             console.log(response.data);
             navigate('/welcome', { state: { email } });
