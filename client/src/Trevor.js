@@ -2,7 +2,7 @@ import React from "react";
 import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } from "@google/generative-ai";
 import axios from "axios";
 
-const genAI = new GoogleGenerativeAI(process.env.REACT_APP_API_KEY);
+const genAI = new GoogleGenerativeAI(process.env.REACT_APP_GEMINI_API);
 
 export default function Trevor({ email, mode }) {
 
