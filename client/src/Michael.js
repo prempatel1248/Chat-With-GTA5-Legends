@@ -129,6 +129,7 @@ export default function Michael({ email, mode }) {
 
 
     return <div className={`michael michael${mode}`}>
+        {console.log(process.env.REACT_APP_API_KEY)}
         <div className="michaelHeading">
             <div className="MichaelDP"></div>
             <h1>Michael De Santa</h1>
