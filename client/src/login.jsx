@@ -11,20 +11,20 @@ export default function Signup() {
     const [password, setPassword] = React.useState('');
     const [err, setErr] = React.useState('');
     axios.defaults.withCredentials = true;
-    
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        
-        axios.post('https://chat-with-gta-5-legends-server.vercel.app/login', { email, password })
-        .then(response => {
-            console.log(response.data);
-            navigate('/welcome', { state: { email } });
-        })
-        .catch(error => {
-            const errorMsg = error.response.data.message || "Login failed";
-            setErr(errorMsg);
-            console.error('Login failed:', error);
-        });
+
+        axios.post('https://chat-with-gta5-legends.onrender.com/login', { email, password })
+            .then(response => {
+                console.log(response.data);
+                navigate('/welcome', { state: { email } });
+            })
+            .catch(error => {
+                const errorMsg = error.response.data.message || "Login failed";
+                setErr(errorMsg);
+                console.error('Login failed:', error);
+            });
     }
 
     return (
@@ -32,19 +32,19 @@ export default function Signup() {
             <div className="login">
                 <h1>Login</h1>
                 <form className="loginForm" onSubmit={handleSubmit}>
-                    <input 
-                        type="text" 
-                        placeholder="Email" 
-                        name="email" 
-                        value={email} 
-                        onChange={(e) => setEmail(e.target.value)} 
+                    <input
+                        type="text"
+                        placeholder="Email"
+                        name="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                     />
-                    <input 
-                        type="password" 
-                        placeholder="Password" 
-                        name="password" 
-                        value={password} 
-                        onChange={(e) => setPassword(e.target.value)} 
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        name="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                     />
                     <button className="loginbtn" type="submit">Login</button>
                 </form>
