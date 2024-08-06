@@ -95,7 +95,7 @@ export default function Michael({ email, mode }) {
         if (history.length > 0) {
             axios.post('https://chat-with-gta5-legends.onrender.com/chatHistory', { email, history, character: "Michael" })
                 .then(response => {
-                    // console.log(response.data);
+                    console.log(response.data);
                 })
                 .catch(error => {
                     console.log("Error in inserting history to DB: ", error)
