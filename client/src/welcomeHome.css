@@ -1,19 +1,30 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-.welcomePage{
+.welcomePage {
     height: 100vh;
-    width: 99%;
-    /* background-image: url('./images/gta-map.png');
-    background-position: 0px 85%; */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
 }
 
 .welcomePara {
     background-color: rgba(0, 0, 0, 0.3);
     color: white;
-    font-size: 25px;
-    padding: 5px;
-    width: 100%;
-    height: 20vh;
-    margin: auto;
+    font-size: 1.5rem;
+    padding: 1rem;
+    width: 90%;
+    max-width: 800px;
+    margin: 1rem auto;
+    text-align: center;
 }
 
 .welcomePara p {
@@ -25,55 +36,77 @@
     opacity: 0;
 }
 
-
 .p1 {
     animation: typing 3s steps(76) 0s 1 forwards, blink 1s step-end 2s;
     animation-fill-mode: forwards;
-    animation: name duration timing-function delay iteration-count direction fill-mode;
 }
+
 .p2 {
     animation: typing 3s steps(64) 3s 1 forwards, blink 1s step-end 5s;
     animation-fill-mode: forwards;
 }
+
 .p3 {
     animation: typing 3s steps(64) 6s 1 forwards, blink 1s step-end 8s;
     animation-fill-mode: forwards;
 }
 
 @keyframes typing {
-    from { width: 0; opacity: 1; }
-    to { width: 100%; opacity: 1; }
+    from {
+        width: 0;
+        opacity: 1;
+    }
+
+    to {
+        width: 100%;
+        opacity: 1;
+    }
 }
 
 @keyframes blink {
-    from{border-right: 2px solid white;}
-    to{border-right: 2px solid transparent;}
+    from {
+        border-right: 2px solid white;
+    }
+
+    to {
+        border-right: 2px solid transparent;
+    }
 }
 
-
-.red{
+.red {
     color: red;
 }
+
 @keyframes dispCharacter {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 .startWithCharacter {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
-    margin: 20px 50px 20px 50px;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin: 1rem auto;
+    width: 90%;
+    max-width: 800px;
 }
 
-.startWithMichael, .startWithFranklin, .startWithTrevor {
+.startWithMichael,
+.startWithFranklin,
+.startWithTrevor {
     opacity: 0;
     animation: dispCharacter 3s 8s forwards;
     animation-fill-mode: forwards;
     background-size: cover;
-    height: 370px;
-    margin-top: 20px;
-    width: 20%;
+    height: 200px;
+    width: 200px;
     border: none;
     border-radius: 50%;
 }
@@ -90,22 +123,49 @@
     background-image: url('./images/trevor2.jpg');
 }
 
-/* Hover effect with border */
-.startWithMichael:hover, .startWithFranklin:hover, .startWithTrevor:hover {
-    /* cursor: pointer; */
-    /* height: 370px;
-    width: 21%; */
+.startWithMichael:hover,
+.startWithFranklin:hover,
+.startWithTrevor:hover {
+    cursor: pointer;
     border-radius: 20%;
-    /* border: 7px solid white; */
+    border: 7px solid white;
 }
 
 .GTA5Trailer {
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 100vh;
-    object-fit: cover; 
-    background-size: cover;
-    z-index: -100;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .welcomePara {
+        font-size: 1.25rem;
+        padding: 0.75rem;
+    }
+
+    .startWithMichael,
+    .startWithFranklin,
+    .startWithTrevor {
+        height: 150px;
+        width: 150px;
+    }
+}
+
+@media (max-width: 480px) {
+    .welcomePara {
+        font-size: 1rem;
+        padding: 0.5rem;
+    }
+
+    .startWithMichael,
+    .startWithFranklin,
+    .startWithTrevor {
+        height: 100px;
+        width: 100px;
+    }
 }

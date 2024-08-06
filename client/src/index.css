@@ -18,14 +18,19 @@ code {
   text-align: center;
   transition: all 0.3s;
 }
-.sidebarlight{
+
+.sidebarlight {
   background-color: rgba(255, 255, 255, 0.8);
   color: black;
 }
-.sidebarlight .sideFranklin:hover, .sidebarlight .sideMichael:hover, .sidebarlight .sideTrevor:hover{
+
+.sidebarlight .sideFranklin:hover,
+.sidebarlight .sideMichael:hover,
+.sidebarlight .sideTrevor:hover {
   border: 4px solid rgb(222, 222, 222);
 }
-.sidebarlight .logoutBtn{
+
+.sidebarlight .logoutBtn {
   border: 1px solid black;
 }
 
@@ -35,6 +40,7 @@ code {
   border: none;
   cursor: pointer;
 }
+
 .logoutBtn:hover {
   background-color: red;
 }
@@ -42,7 +48,7 @@ code {
 .main {
   display: flex;
   flex-direction: row;
-  background-image: url('./images/gta-map.png');
+  background-image: url('./images/los-sentos-sunset.jpg');
   background-position: 40% 85%;
 }
 
@@ -56,7 +62,10 @@ code {
   padding-bottom: 20px;
   background-color: rgba(0, 0, 0, 0.5);
 }
-.michaellight .input-chat, .franklinlight .input-chat, .trevorlight .input-chat{
+
+.michaellight .input-chat,
+.franklinlight .input-chat,
+.trevorlight .input-chat {
   background-color: rgba(255, 255, 255, 0.3);
 }
 
@@ -66,16 +75,19 @@ code {
   color: black;
   border: 1px solid black;
 }
+
 .input-chat button {
   height: 100%;
   width: 5%;
   border: 1px solid black;
   cursor: pointer;
 }
+
 .input-chat button:hover {
   background-color: red;
 }
-.send{
+
+.send {
   border: none;
   font-size: 25px;
   color: black;
@@ -89,7 +101,7 @@ code {
   height: 78vh;
   overflow-x: hidden;
   overflow-y: auto;
-  
+
   scroll-behavior: smooth;
 }
 
@@ -107,7 +119,10 @@ code {
   float: right;
   text-align: left;
 }
-.michaellight .prompt-box, .franklinlight .prompt-box, .trevorlight .prompt-box{
+
+.michaellight .prompt-box,
+.franklinlight .prompt-box,
+.trevorlight .prompt-box {
   background-color: rgba(255, 255, 255, 0.8);
   color: black;
 }
@@ -123,11 +138,16 @@ code {
   width: 70%;
   float: left;
 }
-.michaellight .reply-box, .franklinlight .reply-box, .trevorlight .reply-box{
+
+.michaellight .reply-box,
+.franklinlight .reply-box,
+.trevorlight .reply-box {
   background-color: rgba(255, 255, 255, 0.8);
 }
 
-.michael, .franklin, .trevor {
+.michael,
+.franklin,
+.trevor {
   width: 100%;
   height: 100vh;
 }
@@ -153,28 +173,33 @@ code {
   border-radius: 5px;
   opacity: 0.25;
 }
+
 .sideFranklin:hover {
   border: 4px solid rgb(33, 33, 33);
   border-radius: 8px;
   opacity: 0.5;
 }
+
 .sideMichael {
   background-image: url("images/michael.png");
   background-size: cover;
   border-radius: 5px;
   opacity: 0.25;
 }
+
 .sideMichael:hover {
   border: 4px solid rgb(33, 33, 33);
   border-radius: 8px;
   opacity: 0.5;
 }
+
 .sideTrevor {
   background-image: url("images/trevor.png");
   background-size: cover;
   border-radius: 5px;
   opacity: 0.25;
 }
+
 .sideTrevor:hover {
   border: 4px solid rgb(33, 33, 33);
   border-radius: 8px;
@@ -189,30 +214,36 @@ code {
   align-items: center;
   position: relative;
 }
+
 .sidebar h1 {
   margin-top: 5px;
   margin-bottom: -10px;
 }
 
-.closeSidebar, .openSidebar {
+.closeSidebar,
+.openSidebar {
   font-size: 30px;
   background-color: transparent;
   color: red;
   border: none;
   cursor: pointer;
 }
+
 .closeSidebar {
   position: absolute;
   right: 0px;
   top: 10px;
 }
+
 .openSidebar {
   position: absolute;
   left: 0px;
   top: 10px;
 }
 
-.michaelHeading, .franklinHeading, .trevorHeading {
+.michaelHeading,
+.franklinHeading,
+.trevorHeading {
   color: white;
   background-color: rgba(0, 0, 0, 0.6);
   font-weight: 900;
@@ -221,7 +252,10 @@ code {
   align-items: center;
   padding-left: 30px;
 }
-.michaellight .michaelHeading, .franklinlight .franklinHeading, .trevorlight .trevorHeading{
+
+.michaellight .michaelHeading,
+.franklinlight .franklinHeading,
+.trevorlight .trevorHeading {
   background-color: rgba(255, 255, 255, 0.4);
   color: black;
 }
@@ -234,6 +268,7 @@ code {
   height: 45px;
   width: 45px;
 }
+
 .FranklinDP {
   background-image: url('./images/franklinDP.jpeg');
   border-radius: 50%;
@@ -242,6 +277,7 @@ code {
   height: 45px;
   width: 45px;
 }
+
 .TrevorDP {
   background-image: url('./images/trevorDP.jpeg');
   border-radius: 50%;
@@ -255,10 +291,12 @@ code {
   border-radius: 8px;
   opacity: 1;
 }
+
 .SelectedFranklin .sideFranklin {
   border-radius: 8px;
   opacity: 1;
 }
+
 .SelectedTrevor .sideTrevor {
   border-radius: 8px;
   opacity: 1;
@@ -270,16 +308,20 @@ code {
     width: 30%;
     height: 100vh;
   }
-  .main-chat-box{
+
+  .main-chat-box {
     height: 80vh;
   }
+
   .input-chat input {
     width: 70%;
   }
+
   .input-chat button {
     width: 14%;
   }
-  .closeSidebar{
+
+  .closeSidebar {
     position: absolute;
     top: 40px;
     left: 10%;
@@ -291,20 +333,27 @@ code {
     width: 45%;
     height: 100vh;
   }
+
   .input-chat input {
     width: 65%;
   }
+
   .input-chat button {
     width: 16%;
   }
-  .prompt-box, .reply-box {
+
+  .prompt-box,
+  .reply-box {
     max-width: 80%;
   }
-  .closeSidebar, .openSidebar {
+
+  .closeSidebar,
+  .openSidebar {
     left: 0px;
     font-size: 30px;
   }
-  .closeSidebar{
+
+  .closeSidebar {
     position: absolute;
     top: 40px;
     left: 10%;
@@ -317,34 +366,50 @@ code {
     height: 100vh;
     position: static;
   }
+
   .main {
     flex-direction: column;
   }
-  .michael, .franklin, .trevor{
+
+  .michael,
+  .franklin,
+  .trevor {
     padding-left: 0px;
   }
-  .sidebarHeading, .legends, .logoutBtn {
+
+  .sidebarHeading,
+  .legends,
+  .logoutBtn {
     font-size: 20px;
   }
+
   .input-chat {
     flex-direction: column;
     align-items: center;
   }
-  .input-chat input, .input-chat button {
+
+  .input-chat input,
+  .input-chat button {
     width: 90%;
     margin: 5px 0;
   }
-  .prompt-box, .reply-box {
+
+  .prompt-box,
+  .reply-box {
     max-width: 90%;
   }
-  .closeSidebar, .openSidebar {
+
+  .closeSidebar,
+  .openSidebar {
     position: relative;
     font-size: 40px;
   }
-  .closeSidebar{
+
+  .closeSidebar {
     position: absolute;
   }
-  .openSidebar{
+
+  .openSidebar {
     position: absolute;
     top: -5px;
     left: 50%;
@@ -366,7 +431,8 @@ code {
   background-clip: content-box;
 }
 
-.lightMode, .darkMode{
+.lightMode,
+.darkMode {
   font-size: 30px;
   height: 30px;
   width: 30px;
@@ -378,11 +444,12 @@ code {
   top: 10px;
 }
 
-.lightMode{
+.lightMode {
   background-image: url('./images/sun.png');
   background-size: cover;
   top: 13px;
 }
-.darkMode{
+
+.darkMode {
   color: white;
 }
