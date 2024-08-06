@@ -21,7 +21,7 @@ export default function Signup() {
                 navigate('/welcome', { state: { email } });
             })
             .catch(error => {
-                const errorMsg = "Login failed";
+                const errorMsg = error.response.data.message || "Login failed";
                 setErr(errorMsg);
                 console.error('Login failed:', error);
             });
