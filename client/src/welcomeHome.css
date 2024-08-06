@@ -1,8 +1,6 @@
 .welcomePage {
     height: 100vh;
     width: 99%;
-    /* background-image: url('./images/gta-map.png');
-    background-position: 0px 85%; */
 }
 
 .welcomePara {
@@ -101,14 +99,17 @@
 
 .startWithMichael {
     background-image: url('./images/michael2.jpg');
+    background-position: center;
 }
 
 .startWithFranklin {
     background-image: url('./images/frankiln2.jpg');
+    background-position: center;
 }
 
 .startWithTrevor {
     background-image: url('./images/trevor2.jpg');
+    background-position: center;
 }
 
 .startWithMichael:hover,
@@ -133,10 +134,15 @@
         font-size: 1rem;
     }
 
+    .startWithCharacter {
+        flex-direction: column;
+    }
+
     .startWithMichael,
     .startWithFranklin,
     .startWithTrevor {
         height: 280px;
+        width: 40%;
     }
 }
 
@@ -145,9 +151,14 @@
         font-size: 0.5rem;
     }
 
+    .startWithCharacter {
+        flex-direction: column;
+    }
+
     .startWithMichael,
     .startWithFranklin,
     .startWithTrevor {
-        height: 190px;
+        height: 150px;
+        width: 40%;
     }
 }

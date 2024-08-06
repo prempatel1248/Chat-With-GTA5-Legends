@@ -50,7 +50,6 @@ code {
   flex-direction: row;
   background-image: url('./images/los-sentos-sunset.jpg');
   background-size: cover;
-  /* background-position: 40% 85%; */
 }
 
 .input-chat {
@@ -391,6 +390,7 @@ code {
 
   .input-chat input,
   .input-chat button {
+    height: 25px;
     width: 90%;
     margin: 5px 0;
   }
