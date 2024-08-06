@@ -1,71 +1,104 @@
-*{
-    margin: 0px;
-    padding: 0px;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.loginBody{
+.loginBody, .signupBody {
     display: flex;
     height: 100vh;
     justify-content: center;
     align-items: center;
     background-image: url('./images/gta-5-cover.jpg');
     background-size: cover;
+    background-position: center;
+    padding: 20px;
 }
 
-.signupBody{
-    display: flex;
-    height: 100vh;
-    justify-content: center;
-    align-items: center;
-    background-image: url('./images/gta-5-cover.jpg');
-    background-size: cover;
-}
-
-.login{
+.login {
     color: white;
     padding: 40px;
-    width: 20%;
+    width: 100%;
+    max-width: 400px;
     background-color: rgba(0, 0, 0, 0.6);
     text-align: center;
+    border-radius: 10px;
 }
 
-.login h1{
+.login h1 {
     margin-bottom: 20px;
-    font-size: 45px;
+    font-size: 2.5rem;
 }
 
-.loginForm input{
+.loginForm input {
     width: 100%;
     padding: 12px 10px;
     margin: 8px 0;
     display: inline-block;
     box-sizing: border-box;
-    color: red;
-    font-size: 15px;
+    color: #333;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
 }
 
-.loginbtn{
+.loginbtn {
     border: none;
     width: 100%;
     padding: 12px 10px;
     margin: 8px 0;
     margin-bottom: 20px;
-    font-size: 15px;
+    font-size: 1rem;
+    background-color: #333;
+    color: white;
+    border-radius: 5px;
 }
-.loginbtn:hover{
+
+.loginbtn:hover {
     background-color: red;
     cursor: pointer;
 }
 
-.link{
+.link {
     color: white;
+    display: inline-block;
+    margin-top: 10px;
 }
-.link:hover{
+
+.link:hover {
     color: red;
 }
 
-.error{
+.error {
     color: red;
     margin-top: 20px;
     margin-bottom: -10px;
+}
+
+@media (max-width: 768px) {
+    .login {
+        padding: 20px;
+        width: 90%;
+    }
+
+    .login h1 {
+        font-size: 2rem;
+    }
+
+    .loginForm input,
+    .loginbtn {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .login h1 {
+        font-size: 1.5rem;
+    }
+
+    .loginForm input,
+    .loginbtn {
+        font-size: 0.875rem;
+        padding: 10px 8px;
+    }
 }

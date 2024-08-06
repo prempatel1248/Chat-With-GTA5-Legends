@@ -17,7 +17,7 @@ export default function Signup() {
 
         axios.post('https://chat-with-gta5-legends.onrender.com/login', { email, password })
             .then(response => {
-                console.log(response.data);
+                // console.log(response.data);
                 navigate('/welcome', { state: { email } });
             })
             .catch(error => {

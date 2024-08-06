@@ -21,7 +21,7 @@ export default function Signup() {
         }
         axios.post('https://chat-with-gta5-legends.onrender.com/signup', { email, password })
             .then(response => {
-                console.log(response.data);
+                // console.log(response.data);
                 navigate('/welcome', { state: { email } });
             })
             .catch(error => {
@@ -45,7 +45,7 @@ export default function Signup() {
         setSentotp(true);
         axios.post('https://chat-with-gta5-legends.onrender.com/otp', { email, otp: tempOtp })
             .then(response => {
-                console.log(response.data);
+                // console.log(response.data);
             })
             .catch(error => {
                 setSentotp(false);
