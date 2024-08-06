@@ -114,7 +114,7 @@
 .startWithMichael:hover,
 .startWithFranklin:hover,
 .startWithTrevor:hover {
-    border-radius: 20%;
+    border-radius: 0px;
 }
 
 .GTA5Trailer {
@@ -126,4 +126,28 @@
     object-fit: cover;
     background-size: cover;
     z-index: -100;
+}
+
+@media (max-width: 768px) {
+    .welcomePara {
+        font-size: 1rem;
+    }
+
+    .startWithMichael,
+    .startWithFranklin,
+    .startWithTrevor {
+        height: 280px;
+    }
+}
+
+@media (max-width: 480px) {
+    .welcomePara {
+        font-size: 0.5rem;
+    }
+
+    .startWithMichael,
+    .startWithFranklin,
+    .startWithTrevor {
+        height: 190px;
+    }
 }
