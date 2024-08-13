@@ -92,7 +92,7 @@
     background-size: cover;
     height: 370px;
     margin-top: 20px;
-    width: 20%;
+    width: 200px;
     border: none;
     border-radius: 50%;
 }
@@ -127,6 +127,13 @@
     object-fit: cover;
     background-size: cover;
     z-index: -100;
+}
+
+@media (min-width: 1330px) {
+    .welcomePara {
+        font-size: 30px;
+    }
+
 }
 
 @media (max-width: 768px) {
