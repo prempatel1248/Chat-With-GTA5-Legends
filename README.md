@@ -22,6 +22,7 @@ Welcome to the 'Chat With GTA V Legends' project! This platform allows fans of G
 Each chatbot mimics the characters' unique personalities and speech patterns, offering an immersive and authentic experience for GTA fans. Used google gemini api to build chatbots.
 <h3>Features</h3>
 <ul>
+  <li>Secure login/signup and verifying users with OTP</li>
   <li>Chat with 3 different personalities</li>
   <li>Personalized chats</li>
   <li>Continue chat from where you left</li>
@@ -30,8 +31,8 @@ Each chatbot mimics the characters' unique personalities and speech patterns, of
 
 <h1>Tech Stack</h1>
 <ul>
-  <li>Frontend: React JS</li>
-  <li>Backend: Node JS</li>
+  <li>Frontend: HTML, CSS, JavaScript, ReactJS</li>
+  <li>Backend: NodeJS</li>
   <li>Database: MongoDB Atlas</li>
 </ul>
 
