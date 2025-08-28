@@ -9,8 +9,7 @@ const app = express();
 
 app.use(cors(
     {
-        // origin: "https://chat-with-gta-5-legends.vercel.app",
-        origin: "http://localhost:3000",
+        origin: "https://chat-with-gta-5-legends.vercel.app",
         methods: ["GET", "POST", "DELETE", "PUT"],
         credentials: true,
     }
