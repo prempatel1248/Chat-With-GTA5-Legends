@@ -10,34 +10,34 @@ export default function Main() {
     const navigate = useNavigate();
     const location = useLocation();
     const email = location.state?.email;
-    React.useEffect(() => {
-        if (!email) {
-          navigate('/');
-        }
-      }, [email, navigate]);
+    // React.useEffect(() => {
+    //     if (!email) {
+    //         navigate('/');
+    //     }
+    // }, [email, navigate]);
     const char = location.state?.char;
     const [character, setCharacter] = React.useState(char);
     const [sidebar, setSidebar] = React.useState(true);
     const [darkMode, setDarkMode] = React.useState("dark");
-    
 
-    function changeCharacter(characterName){
-        setCharacter(characterName);    
+
+    function changeCharacter(characterName) {
+        setCharacter(characterName);
     }
-    
-    function logout(){
+
+    function logout() {
         navigate('/');
     }
 
-    function closeSidebar(){
+    function closeSidebar() {
         setSidebar(!sidebar);
     }
 
-    function changeMode(){
-        if(darkMode=="dark"){
+    function changeMode() {
+        if (darkMode === "dark") {
             setDarkMode("light");
         }
-        else{
+        else {
             setDarkMode("dark");
         }
     }
@@ -48,7 +48,7 @@ export default function Main() {
                 <h1>Legends</h1>
                 <button className="closeSidebar" onClick={closeSidebar}><i className="fa-solid fa-angles-left"></i></button>
             </div>
-            
+
             <div className="legends">
                 <button className="sideMichael" onClick={() => changeCharacter("Michael")}></button>
                 <button className="sideFranklin" onClick={() => changeCharacter("Franklin")}></button>
@@ -61,7 +61,7 @@ export default function Main() {
         {character === "Michael" && <Michael email={email} mode={darkMode} />}
         {character === "Franklin" && <Franklin email={email} mode={darkMode} />}
         {character === "Trevor" && <Trevor email={email} mode={darkMode} />}
-        {darkMode==="light" && <button className="lightMode" onClick={changeMode}></button>}
-        {darkMode==="dark" && <button className="darkMode" onClick={changeMode}><i className="fa-regular fa-moon"></i></button>}
+        {darkMode === "light" && <button className="lightMode" onClick={changeMode}></button>}
+        {darkMode === "dark" && <button className="darkMode" onClick={changeMode}><i className="fa-regular fa-moon"></i></button>}
     </div>
 }

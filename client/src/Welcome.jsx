@@ -5,17 +5,17 @@ import { useLocation } from 'react-router-dom';
 import gtaTrailer from './video/gtaTrailer.mp4';
 
 
-export default function Welcome(){
+export default function Welcome() {
     const location = useLocation();
     const navigate = useNavigate();
     const email = location.state?.email;
-    React.useEffect(() => {
-        if (!email) {
-          navigate('/');
-        }
-      }, [email, navigate]);
+    // React.useEffect(() => {
+    //     if (!email) {
+    //         navigate('/');
+    //     }
+    // }, [email, navigate]);
 
-    function startChat(character){
+    function startChat(character) {
         navigate('/home', { state: { email, char: character } })
     }
 

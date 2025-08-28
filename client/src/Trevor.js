@@ -21,7 +21,7 @@ export default function Trevor({ email, mode }) {
         },
     ];
 
-    const [history, setHistory] = React.useState([]);
+    const [history, setHistory] = React.useState(initialHistory);
 
 
     function handleChange(event) {
@@ -29,8 +29,8 @@ export default function Trevor({ email, mode }) {
     }
 
     async function handleSubmit(event) {
+        if (event) event.preventDefault();
         setSubmitPrompt(true);
-        document.getElementById("input-box").value = "";
 
         const safetySettings = [
             {
@@ -55,29 +55,40 @@ export default function Trevor({ email, mode }) {
 
         try {
             setError("");
+            const userMessage = {
+                role: "user",
+                parts: [{ text: prompt }],
+            };
+
+            const newHistory = [...history, userMessage];
+
             const chat = model.startChat({
-                history,
-                generationConfig: {
-                    maxOutputTokens: 200,
-                },
+                history: newHistory,
+                generationConfig: { maxOutputTokens: 200 },
             });
 
-            const msg = prompt;
-            const result = await chat.sendMessageStream(msg);
+            const result = await chat.sendMessageStream(prompt);
+
             let text = '';
             for await (const chunk of result.stream) {
-                const chunkText = chunk.text();
-                text += chunkText;
+                text += chunk.text();
                 setReply(text);
             }
+
+            const modelMessage = {
+                role: "model",
+                parts: [{ text }],
+            };
+
+            setHistory([...newHistory, modelMessage]);
+            setReply("");
+
         } catch (error) {
             console.log(error);
             setError("Something went wrong! Please try again later.")
         }
-
-        setPrompt("");
-        setReply("");
         setSubmitPrompt(false);
+        setPrompt("");
     }
 
     function clearChat() {
@@ -91,7 +102,7 @@ export default function Trevor({ email, mode }) {
     }, [history, reply, submitPrompt]);
 
     React.useEffect(() => {
-        if (history.length > 0) {
+        if (history.length > 0 && email) {
             axios.post('https://chat-with-gta5-legends.onrender.com/chatHistory', { email, history, character: "Trevor" })
                 .then(response => {
                     console.log(response.data);
@@ -121,7 +132,9 @@ export default function Trevor({ email, mode }) {
             }
         };
 
-        fetchChatHistory();
+        if (email) {
+            fetchChatHistory();
+        }
     }, []);
 
     return <div className={`trevor trevor${mode}`}>

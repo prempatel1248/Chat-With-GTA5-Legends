@@ -51,7 +51,13 @@
     cursor: pointer;
 }
 
+.noAccount {
+    display: flex;
+    flex-direction: column;
+}
+
 .link {
+    margin: 5px;
     color: white;
 }
 

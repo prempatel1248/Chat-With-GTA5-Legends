@@ -5,7 +5,6 @@ import axios from "axios";
 const genAI = new GoogleGenerativeAI(process.env.REACT_APP_GEMINI_API);
 
 export default function Michael({ email, mode }) {
-
     const [prompt, setPrompt] = React.useState("")
     const [reply, setReply] = React.useState("");
     const [submitPrompt, setSubmitPrompt] = React.useState(false);
@@ -21,7 +20,7 @@ export default function Michael({ email, mode }) {
         },
     ];
 
-    const [history, setHistory] = React.useState([]);
+    const [history, setHistory] = React.useState(initialHistory);
 
 
     function handleChange(event) {
@@ -29,8 +28,8 @@ export default function Michael({ email, mode }) {
     }
 
     async function handleSubmit(event) {
+        if (event) event.preventDefault();
         setSubmitPrompt(true);
-        document.getElementById("input-box").value = "";
 
         const safetySettings = [
             {
@@ -55,31 +54,42 @@ export default function Michael({ email, mode }) {
 
         try {
             setError("");
+            const userMessage = {
+                role: "user",
+                parts: [{ text: prompt }],
+            };
+
+            const newHistory = [...history, userMessage];
+
             const chat = model.startChat({
-                history,
-                generationConfig: {
-                    maxOutputTokens: 150,
-                },
+                history: newHistory,
+                generationConfig: { maxOutputTokens: 200 },
             });
 
-            const msg = prompt;
-            const result = await chat.sendMessageStream(msg);
+            const result = await chat.sendMessageStream(prompt);
+
             let text = '';
             for await (const chunk of result.stream) {
-                const chunkText = chunk.text();
-                text += chunkText;
+                text += chunk.text();
                 setReply(text);
             }
+
+            const modelMessage = {
+                role: "model",
+                parts: [{ text }],
+            };
+
+            setHistory([...newHistory, modelMessage]);
+            setReply("");
 
         } catch (error) {
             console.log(error);
             setError("Something went wrong! Please try again later.")
         }
-
-        setPrompt("");
-        setReply("");
         setSubmitPrompt(false);
+        setPrompt("");
     }
+
 
     function clearChat() {
         setHistory(initialHistory);
@@ -92,10 +102,10 @@ export default function Michael({ email, mode }) {
     }, [history, reply, submitPrompt]);
 
     React.useEffect(() => {
-        if (history.length > 0) {
+        if (history.length > 0 && email) {
             axios.post('https://chat-with-gta5-legends.onrender.com/chatHistory', { email, history, character: "Michael" })
                 .then(response => {
-                    console.log(response.data);
+                    // console.log(response.data);
                 })
                 .catch(error => {
                     console.log("Error in inserting history to DB: ", error)
@@ -122,7 +132,9 @@ export default function Michael({ email, mode }) {
             }
         };
 
-        fetchChatHistory();
+        if (email) {
+            fetchChatHistory();
+        }
     }, []);
 
 

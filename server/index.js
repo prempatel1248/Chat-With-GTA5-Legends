@@ -9,7 +9,8 @@ const app = express();
 
 app.use(cors(
     {
-        origin: "https://chat-with-gta-5-legends.vercel.app",
+        // origin: "https://chat-with-gta-5-legends.vercel.app",
+        origin: "http://localhost:3000",
         methods: ["GET", "POST", "DELETE", "PUT"],
         credentials: true,
     }
@@ -156,7 +157,6 @@ app.post('/login', async (req, res) => {
 
 app.post('/chatHistory', async (req, res) => {
     const { email, character, history } = req.body;
-
     try {
         const user = await User.findOne({ email });
         if (!user) {
@@ -185,7 +185,6 @@ app.post('/chatHistory', async (req, res) => {
 
 app.get('/getChatHistory', async (req, res) => {
     const { email } = req.query;
-
     try {
         const user = await User.findOne({ email });
         if (!user) {

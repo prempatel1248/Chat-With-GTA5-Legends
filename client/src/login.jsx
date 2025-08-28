@@ -14,17 +14,22 @@ export default function Signup() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
         axios.post('https://chat-with-gta5-legends.onrender.com/login', { email, password })
             .then(response => {
                 // console.log(response.data);
                 navigate('/welcome', { state: { email } });
             })
             .catch(error => {
-                const errorMsg = error.response.data.message || "Login failed";
+                const errorMsg = error?.response?.data?.message || error?.message || "Login failed";
                 setErr(errorMsg);
                 console.error('Login failed:', error);
             });
+    }
+
+    const handleGuest = (e) => {
+        e.preventDefault();
+        navigate('/welcome', { state: { email: '' } });
+
     }
 
     return (
@@ -48,9 +53,12 @@ export default function Signup() {
                     />
                     <button className="loginbtn" type="submit">Login</button>
                 </form>
-                <p>Don't have account?</p>
-                <Link className="link" to="./signup">Sign up</Link>
-                {err && <div className="error">{err}</div>}
+                <div className="noAccount">
+                    <p>Don't have account?</p>
+                    <Link className="link" to="./signup">Sign up</Link>
+                    <Link className="link" onClick={e => handleGuest(e)}>Use Guest Account</Link>
+                    {err && <div className="error">{err}</div>}
+                </div>
             </div>
         </div>
     );
