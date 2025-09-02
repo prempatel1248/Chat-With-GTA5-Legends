@@ -21,7 +21,9 @@ export default function Franklin({ email, mode }) {
         },
     ];
 
-    const [history, setHistory] = React.useState(initialHistory);
+    const franklinHistoryText = localStorage.getItem('franklinHistory');
+    const franklinHistory = JSON.parse(franklinHistoryText);
+    const [history, setHistory] = React.useState(franklinHistory || initialHistory);
 
     function handleChange(event) {
         setPrompt(event.target.value);
@@ -101,6 +103,10 @@ export default function Franklin({ email, mode }) {
     }, [history, reply, submitPrompt]);
 
     React.useEffect(() => {
+        if (history.length > 0 && !email) {
+            const franklinText = JSON.stringify(history);
+            localStorage.setItem('franklinHistory', franklinText);
+        }
         if (history.length > 0 && email) {
             axios.post('https://chat-with-gta5-legends.onrender.com/chatHistory', { email, history, character: "Franklin" })
                 .then(response => {

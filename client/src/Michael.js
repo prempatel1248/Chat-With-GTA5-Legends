@@ -20,8 +20,9 @@ export default function Michael({ email, mode }) {
         },
     ];
 
-    const [history, setHistory] = React.useState(initialHistory);
-
+    const michaelHistoryText = localStorage.getItem('michaelHistory');
+    const michaelHistory = JSON.parse(michaelHistoryText);
+    const [history, setHistory] = React.useState(michaelHistory || initialHistory);
 
     function handleChange(event) {
         setPrompt(event.target.value);
@@ -102,6 +103,10 @@ export default function Michael({ email, mode }) {
     }, [history, reply, submitPrompt]);
 
     React.useEffect(() => {
+        if (history.length > 0 && !email) {
+            const michaelText = JSON.stringify(history);
+            localStorage.setItem('michaelHistory', michaelText);
+        }
         if (history.length > 0 && email) {
             axios.post('https://chat-with-gta5-legends.onrender.com/chatHistory', { email, history, character: "Michael" })
                 .then(response => {

@@ -21,8 +21,9 @@ export default function Trevor({ email, mode }) {
         },
     ];
 
-    const [history, setHistory] = React.useState(initialHistory);
-
+    const trevorHistoryText = localStorage.getItem('trevorHistory');
+    const trevorHistory = JSON.parse(trevorHistoryText);
+    const [history, setHistory] = React.useState(trevorHistory || initialHistory);
 
     function handleChange(event) {
         setPrompt(event.target.value);
@@ -102,6 +103,10 @@ export default function Trevor({ email, mode }) {
     }, [history, reply, submitPrompt]);
 
     React.useEffect(() => {
+        if (history.length > 0 && !email) {
+            const trevorText = JSON.stringify(history);
+            localStorage.setItem('trevorHistory', trevorText);
+        }
         if (history.length > 0 && email) {
             axios.post('https://chat-with-gta5-legends.onrender.com/chatHistory', { email, history, character: "Trevor" })
                 .then(response => {
