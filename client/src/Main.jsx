@@ -26,6 +26,7 @@ export default function Main() {
     }
 
     function logout() {
+        localStorage.clear();
         navigate('/');
     }
 
